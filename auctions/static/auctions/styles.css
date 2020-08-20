@@ -68,3 +68,18 @@ label, button {
 .card-text {
     max-width:80%;
 }
+
+.comments {
+    clear:both;
+    padding-top:3rem;
+}
+
+.comments textarea {
+    width:100%;
+}
+
+.comment {
+    background-color:#dbdbdb;
+    padding:2rem;
+    margin:1rem 0;
+}
