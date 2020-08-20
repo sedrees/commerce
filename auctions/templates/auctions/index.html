@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2>Active Listings</h2>
+
+    {% for listing in objects %}
+    <a href="{% url 'listing' listing.pk %}" class='listing-link'>
+        <div class="row listing">
+            <div class="col-2">
+                {% if listing.img %}
+                    <img src="{{ listing.img }}">
+                {% else %}
+                    <img src="{% static 'auctions/media/no-image.png' %}">
+                {% endif %}
+            </div>
+            <div class="col-10">
+                <h3 class="card-title">
+                ${{listing.bid_current.bid}} &mdash; {{ listing.title }}
+                </h3>
+                <p class="card-text"> {{ listing.description }}</p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

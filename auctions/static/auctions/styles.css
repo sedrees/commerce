@@ -1,0 +1,70 @@
+body {
+    padding: 10px;
+}
+
+label, button {
+    display:block;
+    margin-top:1rem;
+}
+
+.listing-link {
+    display:block;
+    color:inherit;
+}
+
+.listing-link:hover {
+    text-decoration:none;
+    color:inherit;
+    background-color:#fafafa;
+}
+
+.listing {
+    border:1px solid #dfdfdf;
+    border-radius:4px;
+    margin:1rem 0;
+    padding:1rem 0;
+}
+
+.listing img, .listing-img {
+    max-width: 100%;
+    max-height: 400px;
+}
+
+.control-svg { font-size: 0.75em; }
+.control-svg:hover { text-decoration:none; }
+
+.control-svg svg {
+    border-radius:4px;
+    padding:2px;
+    background-color:#e6e6e6;
+    vertical-align:baseline;
+}
+
+.listing-page {
+    padding-top:2rem;
+}
+
+.bidding {
+    margin-top:3rem;
+}
+
+.bidding input {
+    margin-top:1rem;
+    padding:1%;
+    font-size:1.25em;
+    float:left;
+}
+
+.bidding button {
+    float:left;
+    margin-left:1rem;
+    padding:1%;
+}
+.bid-label {
+    margin:0;
+    font-size:0.75em;
+}
+
+.card-text {
+    max-width:80%;
+}
