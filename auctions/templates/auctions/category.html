@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2>{{title}} Listings</h2>
+
+    <ul>
+        {% for item in listings %}
+        <li>
+            <a href="{% url 'listing' item.pk %}">
+                {{ item.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

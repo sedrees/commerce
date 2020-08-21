@@ -8,6 +8,8 @@ class User(AbstractUser):
 class Bid(models.Model):
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     bid = models.DecimalField(max_digits=6, decimal_places=2)
+    def __str__(self):
+        return f"{self.bid} by {self.bidder}"
 
 class Auction(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_listings")
@@ -28,7 +30,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=2000)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return f"{self.author} comment"
+        return f"{self.author} comment on {self.auction}"
 
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

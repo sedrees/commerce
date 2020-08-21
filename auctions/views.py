@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from auctions.models import Auction, Watchlist, Bid
+from auctions.models import Auction, Watchlist, Bid, Comment
 from .models import User
 
 CATEGORIES = [
@@ -27,7 +27,8 @@ class CreateListing(forms.Form):
     category = forms.ChoiceField(choices=CATEGORIES, widget=forms.Select)
     img = forms.CharField(required=False, label="Listing Photo URL")
     description = forms.CharField(empty_value="Description", widget=forms.Textarea, max_length=2000)
-    start = forms.IntegerField(label="Starting Bid", help_text="USD", min_value=1, max_value=1000000)
+    start = forms.DecimalField(label="Starting Bid", help_text="USD", min_value=1, max_value=1000000, decimal_places=2)
+    start.widget = forms.NumberInput(attrs={'step':0.01})
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -111,7 +112,7 @@ def new_auction(request):
                 new.img = img
             new.save()
             
-            return render(request, "auctions/index.html")
+            return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/error.html", {
                 "message":"Error processing form data."
@@ -146,7 +147,8 @@ def listing(request, id):
             is_watching = False
         return render(request, "auctions/listing.html", {
             "auction":auction,
-            "is_watching":is_watching
+            "is_watching":is_watching,
+            "comments":Comment.objects.filter(auction=auction)
         })
 
 @login_required
@@ -161,9 +163,34 @@ def watch(request, id):
     new.save()
     return HttpResponseRedirect(reverse("listing",  args=[auction.pk]))
 
+@login_required
 def close(request, id):
     auction = Auction.objects.get(pk=id)
     auction.winner = auction.bid_current.bidder
     auction.active = False
     auction.save()
     return HttpResponseRedirect(reverse("index"))
+
+@login_required
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        "objects":Watchlist.objects.filter(user=request.user)
+    })
+
+@login_required
+def comment(request, id):
+    new = Comment(author=request.user, content=request.POST["comment-text"], auction=Auction.objects.get(pk=id))
+    new.save()
+    return HttpResponseRedirect(reverse("listing", args=[id]))
+
+def categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories":CATEGORIES
+    })
+
+def category(request, name):
+    listings = Auction.objects.filter(category=name)
+    return render(request, "auctions/category.html", {
+        "listings":listings,
+        "title":name.capitalize()
+    })
